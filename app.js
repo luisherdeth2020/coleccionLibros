@@ -13,20 +13,20 @@ class UI {
 	static agregarLibros(libro) {}
 	static eliminarLibro() {}
 	static mostrarAlerta(mensaje, className) {
-		const div = document.createElement('div');
-		div.className = `alert alert-${className}`;
-		div.appendChild(document.createTextNode(mensaje));
+		const alertaGroup = document.querySelectorAll('.form-group');
+		alertaGroup.forEach((arrayAlerta) => {
+			const div = document.createElement('div');
+			div.className = `alert alert-${className}`;
+			div.appendChild(document.createTextNode(mensaje));
 
-		const container = document.querySelector('.container');
-		const form = document.querySelector('#libro-form');
-		var alerta = document.querySelector('.form-group');
-		// console.log(itemList.parentNode);
-        // var main = itemList.parentNode;
-		form.insertBefore(div, alerta);
+			arrayAlerta.appendChild(div);
+		});
 
-		// setTimeout(() => document.querySelector('.alert').remove(), 3000);
 		setTimeout(() => {
-			document.querySelector('.alert').remove();
+			const deleteAlert = document.querySelectorAll('.alert');
+			deleteAlert.forEach((arrayDelAlert) => {
+				arrayDelAlert.remove();
+			});
 		}, 3000);
 	}
 	static limpiarCampos() {}
