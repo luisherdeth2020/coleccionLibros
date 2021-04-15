@@ -1,7 +1,3 @@
-const titulo = document.querySelector('#titulo');
-const autor = document.querySelector('#autor');
-const isbn = document.querySelector('#isbn');
-
 class Libro {
 	constructor(titulo, autor, isbn) {
 		this.titulo = titulo;
@@ -56,6 +52,7 @@ class Datos {
 		} else {
 			// si existe, te lo envia al otro método de abajo
 			libros = JSON.parse(localStorage.getItem('libros'));
+			console.log('🚀 ~ file: app.js ~ line 59 ~ Datos ~ traerLibros ~ libros', libros);
 		}
 		return libros;
 	}
@@ -73,7 +70,11 @@ class Datos {
 document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	e.preventDefault();
 
-	const vacio = titulo.value ==='' || autor.value ==='' || isbn.value === '';
+	const titulo = document.querySelector('#titulo').value;
+	const autor = document.querySelector('#autor').value;
+	const isbn = document.querySelector('#isbn').value;
+
+	const vacio = (titulo || autor || isbn) === '';
 	if (vacio) {
 		UI.mostrarAlerta('danger');
 	} else {
