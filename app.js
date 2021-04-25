@@ -70,7 +70,7 @@ class Datos {
 	}
 	static removerLibro(isbn) {
 		// esto de aqui es solo una idea, filtramos para que nos de todos los libros menos el del parametro
-		const libros = Datos.traerLibros().filter((libro) => { libro != isbn });
+		const libros = Datos.traerLibros().filter((libro) => { libro.isbn != isbn });
 		// guardamos
 		localStorage.setItem('libros', JSON.stringify(libros));
 	}
