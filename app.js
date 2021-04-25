@@ -10,7 +10,7 @@ class UI {
 	// methods
 	static mostrarLibros() {}
 
-	static agregarLibrosLista(libro) {}
+	static agregarLibros(libro) {}
 	static eliminarLibro() {}
 	static mostrarAlerta(className) {
 		// const div = document.createElement('div');
@@ -56,30 +56,24 @@ class UI {
 class Datos {
 	// métodos
 	static traerLibros() {
-		/**======================
-		 *    Forma OPTIMIZADA
-		 *========================**/
-		// return JSON.parse(localStorage.getItem('upLibro') || '[]');
-
-		
-		// consulta si hay libros
-		let existeLibro;
-		if (localStorage.getItem('upLibro') === null) {
-			existeLibro = [];
-		} else {
-			existeLibro = JSON.parse(localStorage.getItem('upLibro'));
-		}
-		return existeLibro;
+		// consulta si hay libros y los parsea, si no, parcea un arreglo vacio, y les retorna segun sea
+		return JSON.parse(localStorage.getItem('libros') || '[]');
 	}
 	// libro es el objeto
 	static agregarLibro(libro) {
-		// console.log(libro);
-		const upLibro = Datos.traerLibros();
-		upLibro.push(libro);
-		// setItem para guardar información
-		localStorage.setItem('upLibro', JSON.stringify(upLibro));
+		// cargamos el arreglo para manejarlo
+		let libros = Datos.traerLibros();
+		// agregamos el libro
+		libros.push(libro);
+		// setItem para guardar información en el mismo item en el que hacemos get
+		localStorage.setItem('libros', JSON.stringify(libros));
 	}
-	static removerLibro(isbn) {}
+	static removerLibro(isbn) {
+		// esto de aqui es solo una idea, filtramos para que nos de todos los libros menos el del parametro
+		const libros = Datos.traerLibros().filter((libro) => { libro != isbn });
+		// guardamos
+		localStorage.setItem('libros', JSON.stringify(libros));
+	}
 }
 // Controlar el evento Submit
 document.querySelector('#libro-form').addEventListener('submit', (e) => {
@@ -91,7 +85,7 @@ document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	const isbn = document.querySelector('#isbn').value;
 
 	const inputVacio = (titulo || autor || isbn) === '';
-	if (inputVacio){
+	if (inputVacio) {
 		UI.mostrarAlerta('danger');
 	} else {
 		const newLibro = new Libro(titulo, autor, isbn);
