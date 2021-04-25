@@ -7,62 +7,71 @@ class Libro {
 }
 
 class UI {
-	// métodos
+	// methods
 	static mostrarLibros() {}
 
 	static agregarLibros(libro) {}
 	static eliminarLibro() {}
 	static mostrarAlerta(className) {
-		const alertaGroup = document.querySelectorAll('.form-group');
-		const mensajeArray = [];
+		// const div = document.createElement('div');
+		// div.className = `alert alert-${className}`;
+		// div.appendChild(document.createTextNode(mensaje));
 
-		mensajeArray[0] = 'Por favor ingrese TITULO todos los datos';
-		mensajeArray[1] = 'Por favor ingrese AUTOR todos los datos';
-		mensajeArray[2] = 'Por favor ingrese ISBN todos los datos';
+		// const container = document.querySelector(".container");
+		// const form = document.querySelector("#libro-form");
+		const alerta = document.querySelectorAll('.form-group');
+		const btnsubmit = document.querySelector('.btn');
+		// var alerta2 = document.querySelectorAll(".alertasOn");
+		// console.log(alerta2.parentNode);
+		// var main = itemList.parentNode;
+		// form.insertBefore(div, alerta);
+		const mensajeAlert = [];
+		mensajeAlert[0] = 'Por favor ingrese el TITULO';
+		mensajeAlert[1] = 'Por favor ingrese el AUTOR';
+		mensajeAlert[2] = 'Por favor ingrese el ISBN';
 
-		alertaGroup.forEach((arrayAlerta, index) => {
-			console.log({ arrayAlerta });
-			const div = `<div class="alert alert-${className}">${mensajeArray[index]}</div>`;
-			if (arrayAlerta.children[1].value === '') {
-				arrayAlerta.innerHTML += div;
+		alerta.forEach((alertaArray, index) => {
+			const div = `<div class="alert alert-${className}">${mensajeAlert[index]}</div>`;
+			if (alertaArray.children[1].value === '') {
+				alertaArray.innerHTML += div;
+				// btnsubmit.disabled = true;
 			}
 		});
 
-		// const btnSubmit = document.querySelector('.btn');
-		// btnSubmit.disabled = true;
-
+		// setTimeout(() => document.querySelector('.alert').remove(), 3000);
 		setTimeout(() => {
 			const deleteAlert = document.querySelectorAll('.alert');
-			deleteAlert.forEach((arrayDelAlert) => {
-				arrayDelAlert.remove();
-				// btnSubmit.disabled = false;
+			deleteAlert.forEach((classAlert) => {
+				classAlert.remove();
+				// btnsubmit.disabled = false;
 			});
 		}, 3000);
 	}
-	static limpiarCampos() {}
+	static limpiarCampos() {
+		document.querySelector('#titulo').value = '';
+		document.querySelector('#autor').value = '';
+		document.querySelector('#isbn').value = '';
+	}
 }
 class Datos {
 	// métodos
 	static traerLibros() {
 		// consulta si hay libros
-		let libros;
-		// existen los libros?
-		if (localStorage.getItem('libros') === null) {
-			libros = [];
+		let existeLibro;
+		if (localStorage.getItem('existeLibro') === null) {
+			existeLibro = [];
 		} else {
-			// si existe, te lo envia al otro método de abajo
-			libros = JSON.parse(localStorage.getItem('libros'));
-			console.log('🚀 ~ file: app.js ~ line 59 ~ Datos ~ traerLibros ~ libros', libros);
+			existeLibro = JSON.parse(localStorage.getItem('existeLibro'));
 		}
-		return libros;
+		return existeLibro;
 	}
 	// libro es el objeto
 	static agregarLibro(libro) {
-		// crear el arreglo (addLibro)
-		const addLibro = Datos.traerLibros();
-		addLibro.push(libro);
-		// setItem = para guardar la información
-		localStorage.setItem('addLibro', JSON.stringify(addLibro));
+		// console.log(libro);
+		const upLibro = Datos.traerLibros();
+		upLibro.push(libro);
+		// setItem para guardar información
+		localStorage.setItem('upLibro', JSON.stringify(upLibro));
 	}
 	static removerLibro(isbn) {}
 }
@@ -70,15 +79,17 @@ class Datos {
 document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	e.preventDefault();
 
+	// Obtener valores de los campos
 	const titulo = document.querySelector('#titulo').value;
 	const autor = document.querySelector('#autor').value;
 	const isbn = document.querySelector('#isbn').value;
 
-	const vacio = (titulo || autor || isbn) === '';
-	if (vacio) {
+	const inputVacio = (titulo || autor || isbn) === '';
+	if (inputVacio) {
 		UI.mostrarAlerta('danger');
 	} else {
-		const libro = new Libro(titulo, autor, isbn);
-		Datos.agregarLibro(libro);
+		const newLibro = new Libro(titulo, autor, isbn);
+		Datos.agregarLibro(newLibro);
+		UI.limpiarCampos();
 	}
 });
