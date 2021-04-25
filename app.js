@@ -10,7 +10,7 @@ class UI {
 	// methods
 	static mostrarLibros() {}
 
-	static agregarLibros(libro) {}
+	static agregarLibrosLista(libro) {}
 	static eliminarLibro() {}
 	static mostrarAlerta(className) {
 		// const div = document.createElement('div');
@@ -56,12 +56,18 @@ class UI {
 class Datos {
 	// métodos
 	static traerLibros() {
+		/**======================
+		 *    Forma OPTIMIZADA
+		 *========================**/
+		// return JSON.parse(localStorage.getItem('upLibro') || '[]');
+
+		
 		// consulta si hay libros
 		let existeLibro;
-		if (localStorage.getItem('existeLibro') === null) {
+		if (localStorage.getItem('upLibro') === null) {
 			existeLibro = [];
 		} else {
-			existeLibro = JSON.parse(localStorage.getItem('existeLibro'));
+			existeLibro = JSON.parse(localStorage.getItem('upLibro'));
 		}
 		return existeLibro;
 	}
@@ -85,7 +91,7 @@ document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	const isbn = document.querySelector('#isbn').value;
 
 	const inputVacio = (titulo || autor || isbn) === '';
-	if (inputVacio) {
+	if (inputVacio){
 		UI.mostrarAlerta('danger');
 	} else {
 		const newLibro = new Libro(titulo, autor, isbn);
