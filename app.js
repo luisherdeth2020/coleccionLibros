@@ -8,9 +8,22 @@ class Libro {
 
 class UI {
 	// methods
-	static mostrarLibros() {}
+	static mostrarLibros() {
+		const viewLibros = Datos.traerLibros();
+		viewLibros.forEach((libros) => UI.agregarLibrosLista(libros));
+	}
 
-	static agregarLibrosLista(libro) {}
+	static agregarLibrosLista(libro) {
+		const addList = document.querySelector('#libr-list');
+		const fila = document.createElement('tr');
+		fila.innerHTML = `
+			<td>${libro.titulo}</td>
+			<td>${libro.autor}</td>
+			<td>${libro.isbn}</td>
+			<td><a href="#" class="btn btn-danger btn-sm delete">x</td>
+		`;
+		addList.appendChild(fila);
+	}
 	static eliminarLibro() {}
 	static mostrarAlerta(className) {
 		// const div = document.createElement('div');
@@ -61,7 +74,6 @@ class Datos {
 		 *========================**/
 		// return JSON.parse(localStorage.getItem('upLibro') || '[]');
 
-		
 		// consulta si hay libros
 		let existeLibro;
 		if (localStorage.getItem('upLibro') === null) {
@@ -81,6 +93,13 @@ class Datos {
 	}
 	static removerLibro(isbn) {}
 }
+
+/**----------------------
+ *    CARGA DE LA PÁGINA
+ *------------------------**/
+
+document.addEventListener('load', UI.mostrarLibros());
+
 // Controlar el evento Submit
 document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	e.preventDefault();
@@ -89,13 +108,15 @@ document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	const titulo = document.querySelector('#titulo').value;
 	const autor = document.querySelector('#autor').value;
 	const isbn = document.querySelector('#isbn').value;
+	
 
 	const inputVacio = (titulo || autor || isbn) === '';
-	if (inputVacio){
+	if (inputVacio) {
 		UI.mostrarAlerta('danger');
 	} else {
 		const newLibro = new Libro(titulo, autor, isbn);
 		Datos.agregarLibro(newLibro);
+		UI.agregarLibrosLista(newLibro);
 		UI.limpiarCampos();
 	}
 });
