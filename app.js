@@ -33,6 +33,7 @@ class UI {
 		// const container = document.querySelector(".container");
 		// const form = document.querySelector("#libro-form");
 		const alerta = document.querySelectorAll('.form-group');
+		const alerta2 = document.querySelector('.form-group');
 		const btnsubmit = document.querySelector('.btn');
 		// var alerta2 = document.querySelectorAll(".alertasOn");
 		// console.log(alerta2.parentNode);
@@ -50,6 +51,12 @@ class UI {
 				// btnsubmit.disabled = true;
 			}
 		});
+
+		// !todo NO  muestra el mensaje al enviar el formulario
+
+		let alertaFinalinal = `<div class="alert alert-${className}">Libro agregado a la colección</div>`;
+		console.log(alertaFinalinal);
+		document.getElementById('libro-form').insertBefore(alertaFinalinal, alerta2);
 
 		// setTimeout(() => document.querySelector('.alert').remove(), 3000);
 		setTimeout(() => {
@@ -98,7 +105,7 @@ class Datos {
  *    CARGA DE LA PÁGINA
  *------------------------**/
 
-document.addEventListener('load', UI.mostrarLibros());
+document.addEventListener('DOMContentLoaded', UI.mostrarLibros());
 
 // Controlar el evento Submit
 document.querySelector('#libro-form').addEventListener('submit', (e) => {
@@ -108,15 +115,16 @@ document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	const titulo = document.querySelector('#titulo').value;
 	const autor = document.querySelector('#autor').value;
 	const isbn = document.querySelector('#isbn').value;
-	
 
-	const inputVacio = (titulo || autor || isbn) === '';
+	const inputVacio = titulo === '' || autor === '' || isbn === '';
 	if (inputVacio) {
 		UI.mostrarAlerta('danger');
+		// titulo.focus();
 	} else {
 		const newLibro = new Libro(titulo, autor, isbn);
 		Datos.agregarLibro(newLibro);
 		UI.agregarLibrosLista(newLibro);
+		UI.mostrarAlerta('danger');
 		UI.limpiarCampos();
 	}
 });
