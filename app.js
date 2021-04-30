@@ -26,20 +26,10 @@ class UI {
 	}
 	static eliminarLibro() {}
 	static mostrarAlerta(className) {
-		// const div = document.createElement('div');
-		// div.className = `alert alert-${className}`;
-		// div.appendChild(document.createTextNode(mensaje));
-
-		// const container = document.querySelector(".container");
-		// const form = document.querySelector("#libro-form");
 		const alerta = document.querySelectorAll('.form-group');
 		const alerta2 = document.querySelector('.btn-block');
 		const camposCompletos = document.getElementById('libro-form');
-		// const btnsubmit = document.querySelector('.btn');
-		// var alerta2 = document.querySelectorAll(".alertasOn");
-		// console.log(alerta2.parentNode);
-		// var main = itemList.parentNode;
-		// form.insertBefore(div, alerta);
+
 		const mensajeAlert = [];
 		mensajeAlert[0] = 'Por favor ingrese el TITULO';
 		mensajeAlert[1] = 'Por favor ingrese el AUTOR';
@@ -52,15 +42,13 @@ class UI {
 				// btnsubmit.disabled = true;
 			}
 		});
-		if ((titulo.value !== '') & (autor.value !== '') & (isbn.value !== '')) {
+		if (className === 'success') {
 			const alertaFinal = document.createElement('div');
 			alertaFinal.innerHTML += `<div class="alert alert-${className}">Libro agregado a la colección</div>`;
 
 			camposCompletos.insertBefore(alertaFinal, alerta2);
 		}
 
-
-		// setTimeout(() => document.querySelector('.alert').remove(), 3000);
 		setTimeout(() => {
 			const deleteAlert = document.querySelectorAll('.alert');
 			deleteAlert.forEach((classAlert) => {
@@ -94,7 +82,6 @@ class Datos {
 	}
 	// libro es el objeto
 	static agregarLibro(libro) {
-		// console.log(libro);
 		const upLibro = Datos.traerLibros();
 		upLibro.push(libro);
 		// setItem para guardar información
@@ -120,9 +107,7 @@ document.querySelector('#libro-form').addEventListener('submit', (e) => {
 
 	const inputVacio = titulo === '' || autor === '' || isbn === '';
 	if (inputVacio) {
-		console.log(inputVacio);
 		UI.mostrarAlerta('danger');
-		// titulo.focus();
 	} else {
 		const newLibro = new Libro(titulo, autor, isbn);
 		Datos.agregarLibro(newLibro);
