@@ -33,8 +33,9 @@ class UI {
 		// const container = document.querySelector(".container");
 		// const form = document.querySelector("#libro-form");
 		const alerta = document.querySelectorAll('.form-group');
-		const alerta2 = document.querySelector('.form-group');
-		const btnsubmit = document.querySelector('.btn');
+		const alerta2 = document.querySelector('.btn-block');
+		const camposCompletos = document.getElementById('libro-form');
+		// const btnsubmit = document.querySelector('.btn');
 		// var alerta2 = document.querySelectorAll(".alertasOn");
 		// console.log(alerta2.parentNode);
 		// var main = itemList.parentNode;
@@ -49,14 +50,16 @@ class UI {
 			if (alertaArray.children[1].value === '') {
 				alertaArray.innerHTML += div;
 				// btnsubmit.disabled = true;
+			} else {
+				let alertaFinal = document.createElement('div');
+				alertaFinal.innerHTML += `<div class="alert alert-success">Libro agregado a la colección</div>`;
+
+				// console.log(alertaFinal);
+				camposCompletos.insertBefore(alertaFinal, alerta2);
 			}
 		});
 
 		// !todo NO  muestra el mensaje al enviar el formulario
-
-		let alertaFinalinal = `<div class="alert alert-${className}">Libro agregado a la colección</div>`;
-		console.log(alertaFinalinal);
-		document.getElementById('libro-form').insertBefore(alertaFinalinal, alerta2);
 
 		// setTimeout(() => document.querySelector('.alert').remove(), 3000);
 		setTimeout(() => {
