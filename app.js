@@ -98,14 +98,28 @@ class Datos {
 		localStorage.setItem('upLibro', JSON.stringify(upLibro));
 	}
 	static removerLibro(isbn) {
-		const removerLibro = Datos.traerLibros();
-		removerLibro.forEach((libro,index) => {
-			if(libro.isbn === isbn) {
-				removerLibro.splice(index,1);
+		const upLibro = Datos.traerLibros();
+		upLibro.forEach((libro, index) => {
+			if (libro.isbn === isbn) {
+				upLibro.splice(index, 1);
 			}
-		})
-		localStorage.setItem('removerLibro', JSON.stringify(removerLibro));
+		});
+		localStorage.setItem('upLibro', JSON.stringify(upLibro));
 	}
+	
+	/**----------------------
+	 *    forma INCORRECTA (no me aclaro del todo...)
+	 *------------------------**/
+
+	// static removerLibro(isbn) {
+	// 	const removerLibro = Datos.traerLibros();
+	// 	removerLibro.forEach((libro, index) => {
+	// 		if (libro.isbn === isbn) {
+	// 			removerLibro.splice(index, 1);
+	// 		}
+	// 	});
+	// 	localStorage.setItem('removerLibro', JSON.stringify(removerLibro));
+	// }
 }
 
 /**----------------------
