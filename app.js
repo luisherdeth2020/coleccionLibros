@@ -24,7 +24,11 @@ class UI {
 		`;
 		addList.appendChild(fila);
 	}
-	static eliminarLibro() {}
+	static eliminarLibro(elemento) {
+		if (elemento.classList.contains('delete')) {
+			elemento.parentElement.parentElement.remove();
+		}
+	}
 	static mostrarAlerta(className) {
 		const alerta = document.querySelectorAll('.form-group');
 		const alerta2 = document.querySelector('.btn-block');
@@ -41,7 +45,7 @@ class UI {
 			const div = `<div class="alert alert-${className}">${mensajeAlert[index]}</div>`;
 			if (alertaArray.children[1].value === '') {
 				alertaArray.innerHTML += div;
-				if(!focusUsed){
+				if (!focusUsed) {
 					alertaArray.children[1].focus();
 					focusUsed = true;
 				}
@@ -93,7 +97,15 @@ class Datos {
 		// setItem para guardar información
 		localStorage.setItem('upLibro', JSON.stringify(upLibro));
 	}
-	static removerLibro(isbn) {}
+	static removerLibro(isbn) {
+		const removerLibro = Datos.traerLibros();
+		removerLibro.forEach((libro,index) => {
+			if(libro.isbn === isbn) {
+				removerLibro.splice(index,1);
+			}
+		})
+		localStorage.setItem('removerLibro', JSON.stringify(removerLibro));
+	}
 }
 
 /**----------------------
@@ -121,4 +133,11 @@ document.querySelector('#libro-form').addEventListener('submit', (e) => {
 		UI.mostrarAlerta('success');
 		UI.limpiarCampos();
 	}
+});
+
+document.getElementById('libr-list').addEventListener('click', (e) => {
+	console.log(e.target);
+	UI.eliminarLibro(e.target);
+	// elemento padre y el elemento previo el texto(<td>${libro.isbn}</td>)
+	Datos.removerLibro(e.target.parentElement.previousElementSibling.textContent);
 });
