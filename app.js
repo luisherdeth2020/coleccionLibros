@@ -29,7 +29,9 @@ class UI {
 		const alerta = document.querySelectorAll('.form-group');
 		const alerta2 = document.querySelector('.btn-block');
 		const camposCompletos = document.getElementById('libro-form');
+		const btnsubmit = document.querySelector('.btn');
 
+		let focusUsed = false;
 		const mensajeAlert = [];
 		mensajeAlert[0] = 'Por favor ingrese el TITULO';
 		mensajeAlert[1] = 'Por favor ingrese el AUTOR';
@@ -39,7 +41,11 @@ class UI {
 			const div = `<div class="alert alert-${className}">${mensajeAlert[index]}</div>`;
 			if (alertaArray.children[1].value === '') {
 				alertaArray.innerHTML += div;
-				// btnsubmit.disabled = true;
+				if(!focusUsed){
+					alertaArray.children[1].focus();
+					focusUsed = true;
+				}
+				btnsubmit.disabled = true;
 			}
 		});
 		if (className === 'success') {
@@ -53,7 +59,7 @@ class UI {
 			const deleteAlert = document.querySelectorAll('.alert');
 			deleteAlert.forEach((classAlert) => {
 				classAlert.remove();
-				// btnsubmit.disabled = false;
+				btnsubmit.disabled = false;
 			});
 		}, 3000);
 	}
