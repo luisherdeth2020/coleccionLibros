@@ -10,6 +10,7 @@ class UI {
 	// methods
 	static mostrarLibros() {
 		const viewLibros = Datos.traerLibros();
+		console.log(viewLibros);
 		viewLibros.forEach((libros) => UI.agregarLibrosLista(libros));
 	}
 
@@ -58,6 +59,12 @@ class UI {
 
 			camposCompletos.insertBefore(alertaFinal, alerta2);
 		}
+		if (className === 'warning') {
+			const alertaFinal = document.createElement('div');
+			alertaFinal.innerHTML += `<div class="alert alert-${className}">Este libro existe</div>`;
+
+			camposCompletos.insertBefore(alertaFinal, alerta2);
+		}
 
 		setTimeout(() => {
 			const deleteAlert = document.querySelectorAll('.alert');
@@ -80,8 +87,6 @@ class Datos {
 		 *    Forma OPTIMIZADA
 		 *========================**/
 		// return JSON.parse(localStorage.getItem('upLibro') || '[]');
-
-		// consulta si hay libros
 		let existeLibro;
 		if (localStorage.getItem('upLibro') === null) {
 			existeLibro = [];
@@ -93,33 +98,20 @@ class Datos {
 	// libro es el objeto
 	static agregarLibro(libro) {
 		const upLibro = Datos.traerLibros();
+
 		upLibro.push(libro);
 		// setItem para guardar información
 		localStorage.setItem('upLibro', JSON.stringify(upLibro));
 	}
 	static removerLibro(isbn) {
-		const upLibro = Datos.traerLibros();
-		upLibro.forEach((libro, index) => {
+		const removerLibro = Datos.traerLibros();
+		removerLibro.forEach((libro, index) => {
 			if (libro.isbn === isbn) {
-				upLibro.splice(index, 1);
+				removerLibro.splice(index, 1);
 			}
 		});
 		localStorage.setItem('upLibro', JSON.stringify(upLibro));
 	}
-	
-	/**----------------------
-	 *    forma INCORRECTA (no me aclaro del todo...)
-	 *------------------------**/
-
-	// static removerLibro(isbn) {
-	// 	const removerLibro = Datos.traerLibros();
-	// 	removerLibro.forEach((libro, index) => {
-	// 		if (libro.isbn === isbn) {
-	// 			removerLibro.splice(index, 1);
-	// 		}
-	// 	});
-	// 	localStorage.setItem('removerLibro', JSON.stringify(removerLibro));
-	// }
 }
 
 /**----------------------
@@ -127,6 +119,7 @@ class Datos {
  *------------------------**/
 
 document.addEventListener('DOMContentLoaded', UI.mostrarLibros());
+// Algo como: const ui = new UI(); document.addEventListener('DOMContentLoaded', ui.mostrarLibros);
 
 // Controlar el evento Submit
 document.querySelector('#libro-form').addEventListener('submit', (e) => {
@@ -141,6 +134,14 @@ document.querySelector('#libro-form').addEventListener('submit', (e) => {
 	if (inputVacio) {
 		UI.mostrarAlerta('danger');
 	} else {
+		const buscarLibro = JSON.parse(localStorage.getItem('upLibro'));
+		const existeLibro = buscarLibro?.some((item) => item.isbn === isbn);
+
+		if (existeLibro) {
+			UI.mostrarAlerta('warning');
+			return;
+		}
+
 		const newLibro = new Libro(titulo, autor, isbn);
 		Datos.agregarLibro(newLibro);
 		UI.agregarLibrosLista(newLibro);
