@@ -86,14 +86,8 @@ class Datos {
 		/**======================
 		 *    Forma OPTIMIZADA
 		 *========================**/
-		// return JSON.parse(localStorage.getItem('upLibro') || '[]');
-		let existeLibro;
-		if (localStorage.getItem('upLibro') === null) {
-			existeLibro = [];
-		} else {
-			existeLibro = JSON.parse(localStorage.getItem('upLibro'));
-		}
-		return existeLibro;
+		// con el parse me trae el array, si no, sólo me muestra una cadena de String
+		return JSON.parse(localStorage.getItem('upLibro') || '[]');
 	}
 	// libro es el objeto
 	static agregarLibro(libro) {
