@@ -98,10 +98,10 @@ class Datos {
 		localStorage.setItem('upLibro', JSON.stringify(upLibro));
 	}
 	static removerLibro(isbn) {
-		const removerLibro = Datos.traerLibros();
-		removerLibro.forEach((libro, index) => {
+		const upLibro = Datos.traerLibros();
+		upLibro.forEach((libro, index) => {
 			if (libro.isbn === isbn) {
-				removerLibro.splice(index, 1);
+				upLibro.splice(index, 1);
 			}
 		});
 		localStorage.setItem('upLibro', JSON.stringify(upLibro));
